@@ -6,15 +6,15 @@
     >
 
       <template #item.tasks="{ item }">
-        <div>Words :
+        <div class="my-1">Words :
           <p class="d-inline" v-for="(task,index) in item.tasks.words" :key="index">{{ getTaskStatus(task) }} </p>
         </div>
         <v-divider class="my-1"></v-divider>
-        <div>Lines :
+        <div class="my-1">Lines :
           <p class="d-inline" v-for="(task,index) in item.tasks.lines" :key="index">{{ getTaskStatus(task) }} </p>
         </div>
         <v-divider class="my-1"></v-divider>
-        <div>Chars :
+        <div class="my-1">Chars :
           <p class="d-inline" v-for="(task,index) in item.tasks.chars" :key="index">{{ getTaskStatus(task) }} </p>
         </div>
       </template>
@@ -24,7 +24,7 @@
       </template>
 
       <template #item.link="{ item }">
-        <a :href="item.link">Link</a>
+        <router-link :to="'/project/'+item.id">Project Link</router-link>
       </template>
 
     </v-data-table>
@@ -114,7 +114,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 tr {
   height: 100px !important;
 }
