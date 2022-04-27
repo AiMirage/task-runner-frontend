@@ -28,11 +28,25 @@
       </template>
 
     </v-data-table>
+
+    <!--  New Task Dialog  -->
+    <v-col cols="auto">
+      <new-task-dialog></new-task-dialog>
+    </v-col>
+
   </v-container>
 </template>
 
 <script>
+
+import NewTaskDialog from './NewTaskDialog';
+
 export default {
+
+  components: {
+    NewTaskDialog,
+  },
+
   data() {
     return {
       projects: [
