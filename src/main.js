@@ -11,6 +11,23 @@ Vue.use(Notifications, {velocity});
 
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+    if (to.path !== '/login') {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (Cookies.get('user') === null) {
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath}
+            })
+        } else {
+            next()
+        }
+    } else {
+        next() // make sure to always call next()!
+    }
+})
+
 new Vue({
     router,
     store,

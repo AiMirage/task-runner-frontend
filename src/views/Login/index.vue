@@ -30,17 +30,12 @@
             :disabled="!valid"
             color="primary"
             class="mr-4"
-            @click="validate"
+            @click="login"
+            :loading="busy"
         >
           Login
         </v-btn>
 
-        <v-btn
-            color="warning"
-            @click="resetValidation"
-        >
-          Reset Validation
-        </v-btn>
       </v-form>
     </v-card>
   </v-container>
@@ -49,6 +44,7 @@
 <script>
 export default {
   data: () => ({
+    busy: false,
     valid: true,
     email: '',
     emailRules: [
@@ -62,11 +58,23 @@ export default {
   }),
 
   methods: {
-    validate() {
-      this.$refs.form.validate()
+
+    login() {
+      if (this.validate()) {
+        this.busy = true;
+
+        const payload = {email: this.email, password: this.password, device_name: 'test'};
+
+        this.$store.dispatch('Auth/login', payload).then(res => {
+          this.$router.push('/');
+        }).finally(() => {
+          this.busy = false;
+        });
+      }
     },
-    resetValidation() {
-      this.$refs.form.resetValidation()
+
+    validate() {
+      return this.$refs.form.validate()
     },
   },
 }
