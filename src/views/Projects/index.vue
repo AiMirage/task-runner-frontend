@@ -7,15 +7,15 @@
 
       <template #item.tasks="{ item }">
         <div class="my-1">Words :
-          <p class="d-inline" v-for="(task,index) in item.tasks.words" :key="index">{{ getTaskStatus(task) }} </p>
+          <p class="d-inline" v-for="(task,index) in item.tasks.words" :key="index">{{ task }}</p>
         </div>
         <v-divider class="my-1"></v-divider>
         <div class="my-1">Lines :
-          <p class="d-inline" v-for="(task,index) in item.tasks.lines" :key="index">{{ getTaskStatus(task) }} </p>
+          <p class="d-inline" v-for="(task,index) in item.tasks.lines" :key="index">{{ task }} </p>
         </div>
         <v-divider class="my-1"></v-divider>
         <div class="my-1">Chars :
-          <p class="d-inline" v-for="(task,index) in item.tasks.chars" :key="index">{{ getTaskStatus(task) }} </p>
+          <p class="d-inline" v-for="(task,index) in item.tasks.chars" :key="index">{{ task }} </p>
         </div>
       </template>
 
@@ -47,33 +47,23 @@ export default {
     NewTaskDialog,
   },
 
+  created() {
+    this.$store.dispatch('Projects/fetchAll');
+  },
+
+  // Release memory
+  destroyed() {
+    this.$store.commit('Projects/RESET_PROJECTS')
+  },
+
+  computed: {
+    projects() {
+      return this.$store.getters['Projects/projects'];
+    }
+  },
+
   data() {
     return {
-      projects: [
-
-        {
-          id: "Proj_123",
-          tasks: {
-            words: ["No", "No", "Failed", "Success", "Running"],
-            lines: ["No", "No", "Failed", "Success", "Running"],
-            chars: ["Success", "No", "Failed", "Success", "Running"],
-          },
-          running: true,
-          link: 'test.com'
-        },
-
-        {
-          id: "Proj_456",
-          tasks: {
-            words: ["No", "Success", "Failed", "Success", "Running"],
-            lines: ["Success", "No", "Failed", "Success", "Success"],
-            chars: ["Success", "No", "Not Running", "Success", "Running"],
-          },
-          running: false,
-          link: 'test.com'
-        },
-
-      ],
       headers: [
         {
           text: "Project",
@@ -95,22 +85,7 @@ export default {
     };
   },
 
-  methods: {
-    getTaskStatus(task) {
-      switch (task) {
-        case "Success" :
-          return '🟢';
-        case "Failed":
-          return '🔴';
-        case "Running":
-          return '↪️';
-        case "Not Running":
-          return '⌛';
-        default:
-          return '⚪';
-      }
-    },
-  },
+  methods: {},
 }
 </script>
 

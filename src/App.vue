@@ -15,6 +15,13 @@
     <v-main>
       <router-view/>
     </v-main>
+
+    <notifications
+        group="loggedIn"
+        position="top right"
+        animation-type="velocity"
+    />
+
   </v-app>
 </template>
 
