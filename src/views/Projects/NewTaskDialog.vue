@@ -36,16 +36,22 @@
 
             <v-select
                 :items="taskTypes"
-                label="Type"
+                label="Count"
+                :value="type"
+                :rules="typeRules"
                 outlined
                 dense
+                @change="setType"
             ></v-select>
 
             <v-file-input
                 label="Choose File"
                 outlined
                 dense
+                :value="file"
+                :rules="fileRules"
                 hint="Allowed types are 'txt'"
+                @change="setFile"
             ></v-file-input>
 
 
@@ -57,7 +63,7 @@
               :disabled="!valid"
               color="primary"
               class="mr-4"
-              @click="validate"
+              @click="save"
               :loading="busy"
           >
             Save
@@ -80,16 +86,50 @@ export default {
   data: () => ({
     busy: false,
     valid: true,
-    taskTypes: ['Count Words', 'Count Lines', 'Count Characters'],
+    taskTypes: ['words', 'lines', 'chars'],
     projectId: '',
     projectIdRules: [
       v => !!v || 'Project id is required',
     ],
+    type: '',
+    typeRules: [
+      v => !!v || 'Type is required',
+    ],
+    file: null,
+    fileRules: [
+      v => !!v || 'File is required',
+    ],
   }),
 
   methods: {
+
+    setFile(f) {
+      this.file = f;
+    },
+
+    setType(t) {
+      this.type = t;
+    },
+
+    save() {
+      if (this.validate()) {
+        this.busy = true;
+
+        const payload = new FormData();
+        payload.append('project_id', this.projectId);
+        payload.append('type', this.type);
+        payload.append('file', this.file);
+
+        this.$store.dispatch('Tasks/create', payload).then(res => {
+          this.$store.dispatch('Projects/fetchAll');
+        }).finally(() => {
+          this.busy = false;
+        });
+      }
+    },
+
     validate() {
-      this.$refs.form.validate()
+      return this.$refs.form.validate()
     },
   },
 }

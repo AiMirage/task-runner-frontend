@@ -53,6 +53,28 @@ const actions = {
             });
         })
 
+    },
+
+    create(context, payload) {
+
+        return new Promise((resolve, reject) => {
+            WebApi.post(endpoints.TASKS, payload)
+                .then(response => {
+                    Vue.notify({
+                        group: 'loggedIn',
+                        type: 'success',
+                        text: response.data.message
+                    });
+                    resolve(response);
+                }).catch(error => {
+                Vue.notify({
+                    group: 'loggedIn',
+                    type: 'error',
+                    text: error.data.message
+                });
+                reject(error);
+            });
+        })
     }
 
 };
