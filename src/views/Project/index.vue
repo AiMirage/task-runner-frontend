@@ -2,7 +2,7 @@
   <v-container>
     <v-data-table
         :headers="headers"
-        :items="projects"
+        :items="tasks"
         :item-class="itemRowBackground"
     >
 
@@ -32,51 +32,19 @@
 
 <script>
 export default {
+
+  created() {
+    this.$store.dispatch('Tasks/fetchAll', this.$route.params.id);
+  },
+
+  computed: {
+    tasks() {
+      return this.$store.getters['Tasks/tasks'];
+    }
+  },
+
   data() {
     return {
-      projects: [
-
-        {
-          id: "123-456-test-789",
-          type: "Count Words",
-          occurrences: '-',
-          result: null,
-          created_at: '',
-          started_at: '',
-          ended_at: '',
-        },
-
-        {
-          id: "123-456-test-789",
-          type: "Count Words",
-          occurrences: '8*',
-          result: "82",
-          created_at: '2022-4-6',
-          started_at: '2022-4-6',
-          ended_at: '',
-        },
-
-        {
-          id: "123-456-test-789",
-          type: "Count Words",
-          occurrences: '10',
-          result: "Success",
-          created_at: '2022-4-6',
-          started_at: '2022-4-6',
-          ended_at: '',
-        },
-
-        {
-          id: "123-456-test-789",
-          type: "Count Words",
-          occurrences: '10',
-          result: "Failed",
-          created_at: '2022-4-6',
-          started_at: '2022-4-6',
-          ended_at: '',
-        },
-
-      ],
       headers: [
         {
           text: "Id",
